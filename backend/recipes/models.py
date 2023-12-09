@@ -1,7 +1,10 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.core.validators import MinValueValidator, RegexValidator
 
 from users.models import User
+
+User = get_user_model()
 
 
 class Ingredient(models.Model):
@@ -79,7 +82,7 @@ class Recipe(models.Model):
     )
     ingredients = models.ManyToManyField(
         Ingredient,
-        through='IngredientRecipes',
+        through='IngredientRecipe',
         verbose_name='Ингредиенты'
     )
     tags = models.ManyToManyField(
@@ -108,7 +111,7 @@ class Recipe(models.Model):
         return self.name
 
 
-class IngredientRecipes(models.Model):
+class IngredientRecipe(models.Model):
     """ Количество ингридиентов в рецепте блюда.
         Вспомогательная модель.
     Связывает модели Recipe и Ingredient.
@@ -130,6 +133,7 @@ class IngredientRecipes(models.Model):
     )
 
     class Meta:
+        ordering = ('recipe',)
         verbose_name = 'Ингредиент рецепта'
         verbose_name_plural = 'Ингредиенты рецепта'
         default_related_name = 'amount_ingredients'
@@ -139,7 +143,6 @@ class IngredientRecipes(models.Model):
                 name='unique_ingredient'
             ),
         )
-        ordering = ('recipe',)
 
     def __str__(self) -> str:
         """Строковое представление объекта модели."""
@@ -201,12 +204,12 @@ class ShoppingCart(models.Model):
         verbose_name = 'Корзина'
         verbose_name_plural = 'Корзина'
         default_related_name = 'cart'
-        constraints = [
+        constraints = (
             models.UniqueConstraint(
-                fields=['user', 'recipe'],
+                fields=('user', 'recipe',),
                 name='unique_shopping_cart'
-            )
-        ]
+            ),
+        )
 
     def __str__(self):
         return f'{self.user} :: {self.recipe}'

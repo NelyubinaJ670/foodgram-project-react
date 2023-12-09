@@ -4,7 +4,7 @@ from recipes.models import (
     Tag,
     Ingredient,
     Recipe,
-    IngredientRecipes,
+    IngredientRecipe,
     ShoppingCart,
     Favorite,
 )
@@ -23,7 +23,7 @@ class IngredientAdmin(admin.ModelAdmin):
 
 
 class IngredientRecipeInline(admin.TabularInline):
-    model = IngredientRecipes
+    model = IngredientRecipe
     extra = 0
     min_num = 1
 

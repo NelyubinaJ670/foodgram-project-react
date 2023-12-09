@@ -1,7 +1,7 @@
 from rest_framework import permissions
 
 
-class IsOwnerOrReadOnly(permissions.BasePermission):
+class OwnerOrReadOnly(permissions.BasePermission):
     """ Только автор может изменять и добавлять объекты. """
 
     def has_permission(self, request, view):
