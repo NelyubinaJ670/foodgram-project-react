@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.db.models import Sum
 from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import HttpResponse
@@ -9,7 +10,7 @@ from rest_framework.pagination import PageNumberPagination
 
 from djoser.views import UserViewSet
 
-from users.models import User
+# from users.models import User
 from recipes.models import (
     Tag,
     Ingredient,
@@ -33,6 +34,8 @@ from api.serializers import (
     SubscriptionReadSerializer,
     SubscriptionSerializer
 )
+
+User = get_user_model()
 
 
 class TagViewSet(viewsets.ModelViewSet):
