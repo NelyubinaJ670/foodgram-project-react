@@ -7,6 +7,7 @@ from recipes.models import (
     IngredientRecipe,
     ShoppingCart,
     Favorite,
+    Subscription
 )
 
 
@@ -53,8 +54,13 @@ class FavoriteAdmin(admin.ModelAdmin):
     list_display = ('user', 'recipe',)
 
 
+class SubscriptionAdmin(admin.ModelAdmin):
+    list_display = ('user', 'author', 'date_added',)
+
+
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Ingredient, IngredientAdmin)
 admin.site.register(Recipe, RecipeAdmin)
 admin.site.register(ShoppingCart, ShoppingCartAdmin)
 admin.site.register(Favorite, FavoriteAdmin)
+admin.site.register(Subscription, SubscriptionAdmin)

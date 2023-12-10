@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db.models import Sum
-from django.shortcuts import HttpResponse, get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
+from django.shortcuts import HttpResponse
 
 from rest_framework import status, viewsets, permissions
 from rest_framework.decorators import action
@@ -10,15 +10,16 @@ from rest_framework.pagination import PageNumberPagination
 
 from djoser.views import UserViewSet
 
-from users.models import Subscription, User
 from users.models import User
 from recipes.models import (
     Tag,
     Ingredient,
     Recipe,
     ShoppingCart,
-    Favorite
+    Favorite,
+    Subscription
 )
+from api.utils import create, delete
 from api.filters import RecipeFilter
 from api.permissions import OwnerOrReadOnly
 from api.serializers import (
@@ -58,49 +59,6 @@ class IngredientViewSet(viewsets.ModelViewSet):
         return queryset
 
 
-def create(request, pk, serializer_in, serializer_out, model):
-    """
-    Вспомогательные функции для создания связей
-    в моделях Favorite, ShoppingCart, Subscription.
-    """
-    user = request.user.id
-    obj = get_object_or_404(model, id=pk)
-
-    recipe_data = {'user': user, 'recipe': obj.id}
-    subscribe_data = {'user': user, 'author': obj.id}
-
-    if model is Recipe:
-        serializer = serializer_in(data=recipe_data)
-    else:
-        serializer = serializer_in(data=subscribe_data)
-
-    serializer.is_valid(raise_exception=True)
-    serializer.save()
-    serializer_to_response = serializer_out(obj, context={'request': request})
-    return serializer_to_response
-
-
-def delete(request, pk, model_object, model_for_delete_object):
-    """
-    Вспомогательные функции для удаления связей
-    в моделях Favorite, ShoppingCart, Subscription.
-    """
-    user = request.user
-
-    obj_recipe = get_object_or_404(model_object, id=pk)
-    obj_subscription = get_object_or_404(model_object, id=pk)
-
-    if model_for_delete_object is Subscription:
-        object = get_object_or_404(
-            model_for_delete_object, user=user, author=obj_subscription
-        )
-    else:
-        object = get_object_or_404(
-            model_for_delete_object, user=user, recipe=obj_recipe
-        )
-    object.delete()
-
-
 class RecipeViewSet(viewsets.ModelViewSet):
     """ Вывод для модели Recipe. """
     queryset = Recipe.objects.all()
@@ -128,7 +86,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['post', 'delete'])
     def favorite(self, request, pk):
-        """Добавить/удалить рецепт в список "Избранное."""
+        """Добавить или удалить рецепт в список "Избранное."""
 
         if request.method == 'POST':
             serializer = create(
@@ -147,7 +105,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
    
     @action(detail=True, methods=['post', 'delete'])
     def shopping_cart(self, request, pk):
-        """ Добавить/удалить ингредиенты рецепта в "Корзину покупок" """
+        """ Добавить или удалить ингредиенты рецепта в "Корзину покупок" """
 
         if request.method == 'POST':
             serializer = create(

@@ -6,6 +6,10 @@ from users.models import User
 
 User = get_user_model()
 
+MESSAGE_COOKING_TIME = 'Время приготовления не может быть меньше минуты.'
+MESSAGE_AMOUNT = 'Количество должно быть равно хотя бы одному'
+MESSAGE_COLOR = 'Цвет тега должен быть указан в hex формате'
+
 
 class Ingredient(models.Model):
     """ Ингридиенты для рецепта. """
@@ -39,9 +43,9 @@ class Tag(models.Model):
         'HEX-код',
         max_length=16,
         unique=True,
-        validators=[RegexValidator(
+        validators=(RegexValidator(
             '^#([a-fA-F0-9]{6})',
-            message='Цвет тега должен быть указан в hex формате')]
+            message=MESSAGE_COLOR),)
     )
     slug = models.SlugField(
         'Уникальный адрес',
@@ -91,9 +95,8 @@ class Recipe(models.Model):
     )
     cooking_time = models.PositiveSmallIntegerField(
         'Время приготовления',
-        validators=[MinValueValidator
-                    (1, 'Время приготовления должно быть'
-                     'равно хотя бы одной минуте')]
+        validators=(MinValueValidator(
+            1, message=MESSAGE_COOKING_TIME),)
     )
     pub_date = models.DateTimeField(
         'Дата и время публикации',
@@ -128,8 +131,8 @@ class IngredientRecipe(models.Model):
     )
     amount = models.PositiveSmallIntegerField(
         'Количество',
-        validators=[MinValueValidator
-                    (1, 'Количество должно быть равно хотя бы одному')]
+        validators=(MinValueValidator(
+            1, message=MESSAGE_AMOUNT),)
     )
 
     class Meta:
@@ -213,3 +216,42 @@ class ShoppingCart(models.Model):
 
     def __str__(self):
         return f'{self.user} :: {self.recipe}'
+
+class Subscription(models.Model):
+    """ Подписки пользователей друг на друга. """
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='subscriber',
+        verbose_name='Подписчик'
+    )
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='subscribing',
+        verbose_name='Автор'
+    )
+    date_added = models.DateTimeField(
+        'Дата создания подписки',
+        auto_now_add=True,
+        editable=False,
+    )
+
+    class Meta:
+        verbose_name = 'Подписка'
+        verbose_name_plural = 'Подписки'
+        constraints = (
+            models.UniqueConstraint(
+                fields=('user', 'author',),
+                name='unique_subscriber'
+            ),
+            models.CheckConstraint(
+                check=~models.Q(user=models.F('author')),
+                name='you_can_not_subscribe_to_yourself'
+            ),
+        )
+
+    def __str__(self) -> str:
+        """Строковое представление объекта модели."""
+        return f'{self.user} подписан на {self.author}'

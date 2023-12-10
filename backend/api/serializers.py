@@ -8,7 +8,6 @@ from rest_framework import serializers
 
 from djoser.serializers import UserSerializer
 
-from users.models import Subscription, User
 from users.models import User
 from recipes.models import (
     Tag,
@@ -17,6 +16,7 @@ from recipes.models import (
     IngredientRecipe,
     ShoppingCart,
     Favorite,
+    Subscription
 )
 
 User = get_user_model()
@@ -145,13 +145,13 @@ class RecipeGetSerializer(serializers.ModelSerializer):
         )
 
     def get_is_favorited(self, obj):
-        """Вычисляем поле is_favorited."""
+        """Метод для поля is_favorited."""
         user = self.context.get('request').user
         return (user.is_authenticated
                 and user.favorites.filter(recipe=obj).exists())
 
     def get_is_in_shopping_cart(self, obj):
-        """Вычисляем поле is_in_shopping_cart."""
+        """Метод для поля is_in_shopping_cart."""
         user = self.context.get('request').user
         return (user.is_authenticated
                 and user.cart.filter(recipe=obj).exists())
@@ -276,11 +276,6 @@ class SubscriptionSerializer(serializers.ModelSerializer):
                 message='Вы уже подписаны на этого пользователя'
             )
         ]
-
-    # def validate(self, data):
-    #     if data['author'] == data['user']:
-    #         raise serializers.ValidationError('Нельзя подписаться на себя')
-    #     return data
 
 
 class SubscriptionReadSerializer(UserSerializer):
