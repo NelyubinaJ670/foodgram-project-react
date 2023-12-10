@@ -17,7 +17,7 @@ services:
     env_file: .env
     volumes:
       - static:/backend_static
-      - media:/app/media
+      - media:/app/media/
     depends_on:
       - db
 
@@ -32,6 +32,9 @@ services:
     image: neljuli07/foodgram_gateway
     volumes:
       - static:/staticfiles/
-      - media:/media/    
+      - media:/app/media/    
     ports:
       - "8000:80"
+    depends_on:
+      - backend
+      - frontend
