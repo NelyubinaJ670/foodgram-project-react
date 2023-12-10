@@ -44,9 +44,9 @@ source venv/Scripts/activate
 ```
 pip install -r requirements.txt
 ```
-```
 
 Создать файл .evn для хранения ключей в корне проекта:
+
 ```
 SECRET_KEY='указать секретный ключ'
 ALLOWED_HOSTS='указать имя или IP хоста'
