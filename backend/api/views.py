@@ -1,4 +1,3 @@
-from django.contrib.auth import get_user_model
 from django.db.models import Sum
 from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import HttpResponse
@@ -34,8 +33,6 @@ from api.serializers import (
     SubscriptionReadSerializer,
     SubscriptionSerializer
 )
-
-User = get_user_model()
 
 
 class TagViewSet(viewsets.ModelViewSet):
