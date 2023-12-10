@@ -123,7 +123,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'users.User'
 
 
-# Аутентификация 
+# Аутентификация
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [

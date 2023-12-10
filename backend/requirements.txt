@@ -30,3 +30,5 @@ social-auth-core==4.4.2
 urllib3==2.0.4
 psycopg2-binary==2.9.3 
 django-cors-headers==3.13.0
+flake8==6.0.0
+flake8-isort==6.0.0

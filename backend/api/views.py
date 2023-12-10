@@ -63,7 +63,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
     """ Вывод для модели Recipe. """
     queryset = Recipe.objects.all()
     pagination_class = PageNumberPagination
-    permission_classes = (OwnerOrReadOnly, permissions.IsAuthenticatedOrReadOnly,)
+    permission_classes = (OwnerOrReadOnly,
+                          permissions.IsAuthenticatedOrReadOnly,)
     filter_backends = (DjangoFilterBackend,)
     filterset_class = RecipeFilter
 
@@ -83,7 +84,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
             return RecipeGetSerializer
         return RecipeSerializer
 
-
     @action(detail=True, methods=['post', 'delete'])
     def favorite(self, request, pk):
         """Добавить или удалить рецепт в список "Избранное."""
@@ -102,7 +102,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             )
         delete(request, pk, Recipe, Favorite)
         return Response(status=status.HTTP_204_NO_CONTENT)
-   
+
     @action(detail=True, methods=['post', 'delete'])
     def shopping_cart(self, request, pk):
         """ Добавить или удалить ингредиенты рецепта в "Корзину покупок" """
