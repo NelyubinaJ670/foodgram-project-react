@@ -43,6 +43,8 @@ source venv/Scripts/activate
 Установоить зависимости:
 ```
 pip install -r requirements.txt
+```
+```
 
 Создать файл .evn для хранения ключей в корне проекта:
 ```
