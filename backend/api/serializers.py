@@ -6,6 +6,7 @@ from rest_framework.validators import UniqueTogetherValidator
 from rest_framework import serializers
 
 from djoser.serializers import UserSerializer
+from users.models import User
 
 from recipes.models import (
     Tag,
@@ -16,7 +17,6 @@ from recipes.models import (
     Favorite,
     Subscription
 )
-from users.models import User
 
 
 class Base64ImageField(serializers.ImageField):
