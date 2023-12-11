@@ -4,9 +4,10 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = 'django-insecure-#%7)715fb*+(zh@8vfphnic8q21v&a6qg0zr6l*!*y647hx5&#'
 
-DEBUG = os.getenv('DEBUG')
+# DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -71,6 +72,8 @@ DATABASES = {
         'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
         'HOST': os.getenv('DB_HOST', ''),
         'PORT': os.getenv('DB_PORT', 5432)
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 

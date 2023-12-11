@@ -10,7 +10,6 @@ from rest_framework.pagination import PageNumberPagination
 
 from djoser.views import UserViewSet
 
-# from users.models import User
 from recipes.models import (
     Tag,
     Ingredient,
