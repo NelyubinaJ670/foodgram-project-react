@@ -66,12 +66,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
     filterset_class = RecipeFilter
 
     def get_queryset(self):
-        return (
-            Recipe.objects.prefetch_related(
+        return (Recipe.objects.prefetch_related(
                 'amount_ingredients__ingredient',
-                'tags'
-            ).all()
-                )
+                'tags').all())
 
     def perform_create(self, serializer):
         return serializer.save(author=self.request.user)
