@@ -6,8 +6,8 @@ from rest_framework.validators import UniqueTogetherValidator
 from rest_framework import serializers
 
 from djoser.serializers import UserSerializer
-from users.models import User
 
+from users.models import User
 from recipes.models import (
     Tag,
     Ingredient,
@@ -177,15 +177,21 @@ class RecipeSerializer(serializers.ModelSerializer):
             'cooking_time',
         )
 
+    def validate_cooking_time(self, cooking_time):
+        if int(cooking_time) < 1:
+            raise serializers.ValidationError(
+                'Время готовки не может быть меньше минуты')
+        return cooking_time
+
     def create_ingredients(self, ingredients, recipe):
         """ Метод создает рецепт с ингридиентами. """
-        for ingredient in ingredients:
-            ingredients, status = IngredientRecipe.objects.get_or_create(
+        IngredientRecipe.objects.bulk_create(
+            IngredientRecipe(
                 recipe=recipe,
-                ingredient=Ingredient.objects.get(id=ingredient['id']),
-                amount=ingredient['amount']
-            )
-            print(ingredient)
+                ingredient_id=ingredient.get('id'),
+                amount=ingredient.get('amount'),)
+            for ingredient in ingredients
+        )
 
     def create(self, validated_data):
         tags = validated_data.pop('tags')

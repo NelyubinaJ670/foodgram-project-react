@@ -17,7 +17,7 @@ from recipes.models import (
     Favorite,
     Subscription
 )
-from api.utils import create, delete
+from api.utils import create_object, delete_object
 from api.filters import RecipeFilter
 from api.permissions import OwnerOrReadOnly
 from api.serializers import (
@@ -59,7 +59,6 @@ class IngredientViewSet(viewsets.ModelViewSet):
 
 class RecipeViewSet(viewsets.ModelViewSet):
     """ Вывод для модели Recipe. """
-    queryset = Recipe.objects.all()
     pagination_class = PageNumberPagination
     permission_classes = (OwnerOrReadOnly,
                           permissions.IsAuthenticatedOrReadOnly,)
@@ -67,11 +66,12 @@ class RecipeViewSet(viewsets.ModelViewSet):
     filterset_class = RecipeFilter
 
     def get_queryset(self):
-        recipes = Recipe.objects.prefetch_related(
-            'amount_ingredients__ingredient',
-            'tags'
-        ).all()
-        return recipes
+        return (
+            Recipe.objects.prefetch_related(
+                'amount_ingredients__ingredient',
+                'tags'
+            ).all()
+                )
 
     def perform_create(self, serializer):
         return serializer.save(author=self.request.user)
@@ -87,7 +87,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         """Добавить или удалить рецепт в список "Избранное."""
 
         if request.method == 'POST':
-            serializer = create(
+            serializer = create_object(
                 request,
                 pk,
                 FavoriteSerializer,
@@ -98,7 +98,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 serializer.data,
                 status=status.HTTP_201_CREATED
             )
-        delete(request, pk, Recipe, Favorite)
+        delete_object(request, pk, Recipe, Favorite)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     @action(detail=True, methods=['post', 'delete'])
@@ -106,7 +106,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         """ Добавить или удалить ингредиенты рецепта в "Корзину покупок" """
 
         if request.method == 'POST':
-            serializer = create(
+            serializer = create_object(
                 request,
                 pk,
                 ShoppingCartSerializer,
@@ -117,7 +117,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 serializer.data,
                 status=status.HTTP_201_CREATED
             )
-        delete(request, pk, Recipe, ShoppingCart)
+        delete_object(request, pk, Recipe, ShoppingCart)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     @action(detail=False, methods=['get'],
@@ -157,7 +157,7 @@ class CustomUserViewSet(UserViewSet):
     def subscribe(self, request, id):
         """ Метод создает/удаляет связь между пользователями. """
         if request.method == 'POST':
-            serializer = create(
+            serializer = create_object(
                 request,
                 id,
                 SubscriptionSerializer,
@@ -168,7 +168,7 @@ class CustomUserViewSet(UserViewSet):
                 serializer.data,
                 status=status.HTTP_201_CREATED
             )
-        delete(request, id, User, Subscription)
+        delete_object(request, id, User, Subscription)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     @action(

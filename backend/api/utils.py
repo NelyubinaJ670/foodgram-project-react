@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 from recipes.models import Recipe, Subscription
 
 
-def create(request, pk, serializer_in, serializer_out, model):
+def create_object(request, pk, serializer_in, serializer_out, model):
     """
     Создания связей в Favorite, ShoppingCart, Subscription.
     """
@@ -24,21 +24,18 @@ def create(request, pk, serializer_in, serializer_out, model):
     return serializer_to_response
 
 
-def delete(request, pk, model_object, delete_object):
+def delete_object(request, pk, delete_object):
     """
     Удаления связей в Favorite, ShoppingCart, Subscription.
     """
     user = request.user
 
-    obj_recipe = get_object_or_404(model_object, id=pk)
-    obj_subscription = get_object_or_404(model_object, id=pk)
-
     if delete_object is Subscription:
         object = get_object_or_404(
-            delete_object, user=user, author=obj_subscription
+            delete_object, user=user, id=pk
         )
     else:
         object = get_object_or_404(
-            delete_object, user=user, recipe=obj_recipe
+            delete_object, user=user, id=pk
         )
     object.delete()

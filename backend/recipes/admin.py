@@ -11,12 +11,14 @@ from recipes.models import (
 )
 
 
+@admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
     list_display = ('name', 'color', 'slug',)
     search_fields = ('name',)
     empty_value_display = '-пусто-'
 
 
+@admin.register(Ingredient)
 class IngredientAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'measurement_unit',)
     list_filter = ('name', )
@@ -35,6 +37,7 @@ class TagInline(admin.TabularInline):
     min_num = 1
 
 
+@admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
     list_display = (
         'id', 'name',
@@ -46,21 +49,16 @@ class RecipeAdmin(admin.ModelAdmin):
     empty_value_display = '-пусто-'
 
 
+@admin.register(ShoppingCart)
 class ShoppingCartAdmin(admin.ModelAdmin):
     list_display = ('user', 'recipe',)
 
 
+@admin.register(Favorite)
 class FavoriteAdmin(admin.ModelAdmin):
     list_display = ('user', 'recipe',)
 
 
+@admin.register(Subscription)
 class SubscriptionAdmin(admin.ModelAdmin):
     list_display = ('user', 'author', 'date_added',)
-
-
-admin.site.register(Tag, TagAdmin)
-admin.site.register(Ingredient, IngredientAdmin)
-admin.site.register(Recipe, RecipeAdmin)
-admin.site.register(ShoppingCart, ShoppingCartAdmin)
-admin.site.register(Favorite, FavoriteAdmin)
-admin.site.register(Subscription, SubscriptionAdmin)

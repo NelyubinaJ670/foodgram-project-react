@@ -4,12 +4,16 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.getenv('SECRET_KEY')
-
+SECRET_KEY = 'django-insecure-#%7)715fb*+(zh@8vfphnic8q21v&a6qg0zr6l*!*y647hx5&#'
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['158.160.72.239', '127.0.0.1', 'localhost', 'foodgramyami.sytes.net']
+ALLOWED_HOSTS = [
+    '158.160.72.239',
+    '127.0.0.1',
+    'localhost',
+    'foodgramyami.sytes.net'
+]
 
 
 # Application definition
@@ -25,6 +29,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'djoser',
     'django_filters',
+    'colorfield',
+    'debug_toolbar',
     # Local
     'api.apps.ApiConfig',
     'users.apps.UsersConfig',
@@ -39,6 +45,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'foodgram.urls'
@@ -123,6 +130,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.User'
 
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
 
 # Аутентификация
 

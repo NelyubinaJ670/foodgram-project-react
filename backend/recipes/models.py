@@ -1,11 +1,11 @@
 from django.db import models
-from django.core.validators import MinValueValidator, RegexValidator
+from colorfield.fields import ColorField
+from django.core.validators import MinValueValidator
 
 from users.models import User
 
 MESSAGE_COOKING_TIME = 'Время приготовления не может быть меньше минуты.'
 MESSAGE_AMOUNT = 'Количество должно быть равно хотя бы одному'
-MESSAGE_COLOR = 'Цвет тега должен быть указан в hex формате'
 
 
 class Ingredient(models.Model):
@@ -36,14 +36,7 @@ class Tag(models.Model):
         max_length=200,
         unique=True,
     )
-    color = models.CharField(
-        'HEX-код',
-        max_length=16,
-        unique=True,
-        validators=(RegexValidator(
-            '^#([a-fA-F0-9]{6})',
-            message=MESSAGE_COLOR),)
-    )
+    color = ColorField(default='#FF0000', format='hexa')
     slug = models.SlugField(
         'Уникальный адрес',
         max_length=200,
