@@ -8,6 +8,7 @@ from rest_framework import serializers
 from djoser.serializers import UserSerializer
 
 from users.models import User
+
 from recipes.models import (
     Tag,
     Ingredient,
