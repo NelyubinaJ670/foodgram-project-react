@@ -50,7 +50,7 @@ jobs:
         python manage.py migrate
         python manage.py test
 
-  build_and_push_to_docker_hub:
+  build_backend_and_push_to_docker_hub:
     name: Push Docker image to DockerHub
     runs-on: ubuntu-latest
     needs: tests
@@ -115,7 +115,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs:
-      - build_and_push_to_docker_hub
+      - build_backend_and_push_to_docker_hub
       - build_frontend_and_push_to_docker_hub
       - build_gateway_and_push_to_docker_hub
     steps:
@@ -137,6 +137,11 @@ jobs:
         username: ${{ secrets.USER }}
         key: ${{ secrets.SSH_KEY }}
         passphrase: ${{ secrets.SSH_PASSPHRASE }}
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        DEBUG: ${{ secrets.DEBUG }}
+        ALLOWED_HOSTS: ${{ secrets.ALLOWED_HOSTS }}
+        IP_HOST: ${{ secrets.IP_HOST }}
+        DOMAIN_HOSTS: ${{ secrets.DOMAIN_HOSTS }}
         script: |
           cd foodgram
           # Выполняет pull образов с Docker Hub
