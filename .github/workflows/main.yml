@@ -36,7 +36,10 @@ jobs:
       env:
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
         DEBUG: ${{ secrets.DEBUG }}
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
         ALLOWED_HOSTS: ${{ secrets.ALLOWED_HOSTS }}
+        IP_HOST: ${{ secrets.IP_HOST }}
+        DOMAIN_HOSTS: ${{ secrets.DOMAIN_HOSTS }}
         POSTGRES_USER: django_user_1
         POSTGRES_PASSWORD: django_password_1
         POSTGRES_DB: db_1
