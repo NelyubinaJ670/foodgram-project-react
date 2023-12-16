@@ -12,7 +12,10 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # DEBUG = config('DEBUG', default=False, cast=bool)
 DEBUG = True
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS')
+ALLOWED_HOSTS = [os.getenv('IP_HOST'), '127.0.0.1',
+                 'localhost', os.getenv('DOMAIN_HOSTS'), 'backend']
+
+# ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1').split(',')
 
 # Application definition
 
