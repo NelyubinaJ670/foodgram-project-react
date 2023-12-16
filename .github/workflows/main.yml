@@ -144,6 +144,18 @@ jobs:
           # Выполняет pull образов с Docker Hub
           sudo docker compose -f docker-compose.production.yml pull
 
+          echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} > .env
+          echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} > .env
+          echo POSTGRES_DB=${{ secrets.POSTGRES_DB }} > .env
+          echo DB_HOST=${{ secrets.DB_HOST }} > .env
+          echo DB_PORT=${{ secrets.DB_PORT }} > .env
+          
+          echo DEBUG=${{ secrets.DEBUG }} > .env
+          echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
+          echo ALLOWED_HOSTS=${{ secrets.ALLOWED_HOSTS }} >> .env
+          echo IP_HOST=${{ secrets.IP_HOST }} >> .env
+          echo DOMAIN_HOSTS=${{ secrets.DOMAIN_HOSTS }} >> .env
+
           # Перезапускает все контейнеры в Docker Compose
           sudo docker compose -f docker-compose.production.yml down
           sudo docker compose -f docker-compose.production.yml up -d
