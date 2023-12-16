@@ -11,9 +11,10 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = [os.getenv('IP_HOST'), '127.0.0.1',
-                 'localhost', os.getenv('DOMAIN_HOSTS'), 'backend']
+# ALLOWED_HOSTS = [os.getenv('IP_HOST'), '127.0.0.1',
+#                  'localhost', os.getenv('DOMAIN_HOSTS'), 'backend']
 
+ALLOWED_HOSTS = ['158.160.72.239', '127.0.0.1', 'localhost', 'foodgramyami.sytes.net']
 
 # Application definition
 
