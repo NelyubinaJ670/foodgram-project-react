@@ -2,13 +2,17 @@ import os
 
 from pathlib import Path
 
+from decouple import config
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS')
+ALLOWED_HOSTS = [os.getenv('IP_HOST'), '127.0.0.1',
+                'localhost', os.getenv('DOMAIN_HOSTS'), 'backend']
 
 
 # Application definition
