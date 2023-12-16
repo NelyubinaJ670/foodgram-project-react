@@ -9,7 +9,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-DEBUG = config('DEBUG', default=False, cast=bool)
+# DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = True
 
 ALLOWED_HOSTS = [os.getenv('IP_HOST'), '127.0.0.1',
                  'localhost', os.getenv('DOMAIN_HOSTS'), 'backend']
@@ -147,4 +148,17 @@ REST_FRAMEWORK = {
 
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 6
+}
+
+DJOSER = {
+    'LOGIN_FIELD': 'email',
+    'HIDE_USERS': False,
+    'SERIALIZERS': {
+        'user': 'api.serializers.UserSerializer',
+        'current_user': 'api.serializers.UserSerializer',
+    },
+    'PERMISSIONS': {
+        'user': ['djoser.permissions.CurrentUserOrAdminOrReadOnly'],
+        'user_list': ['rest_framework.permissions.AllowAny'],
+    }
 }
