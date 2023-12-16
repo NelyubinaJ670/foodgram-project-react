@@ -36,7 +36,6 @@ jobs:
       env:
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
         DEBUG: ${{ secrets.DEBUG }}
-        SECRET_KEY: ${{ secrets.SECRET_KEY }}
         ALLOWED_HOSTS: ${{ secrets.ALLOWED_HOSTS }}
         IP_HOST: ${{ secrets.IP_HOST }}
         DOMAIN_HOSTS: ${{ secrets.DOMAIN_HOSTS }}
