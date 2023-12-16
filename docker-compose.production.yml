@@ -22,8 +22,8 @@ services:
       - db
 
   frontend:
-    env_file: .env
     image: neljuli07/foodgram_frontend
+    env_file: .env
     command: cp -r /app/build/. /frontend_static/
     volumes:
       - static_V:/frontend_static
