@@ -14,9 +14,9 @@ jobs:
   #     postgres:
   #       image: postgres:13.10
   #       env:
-  #         POSTGRES_USER: django_user_1
-  #         POSTGRES_PASSWORD: django_password_1
-  #         POSTGRES_DB: db_1
+  #         POSTGRES_USER: django_user
+  #         POSTGRES_PASSWORD: django_password
+  #         POSTGRES_DB: db
   #       ports:
   #         - 5432:5432
   #       options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
@@ -35,13 +35,10 @@ jobs:
   #   - name: Test with flake8 and django tests
   #     env:
   #       # SECRET_KEY: ${{ secrets.SECRET_KEY }}
-  #       # DEBUG: ${{ secrets.DEBUG }}
   #       # ALLOWED_HOSTS: ${{ secrets.ALLOWED_HOSTS }}
-  #       # IP_HOST: ${{ secrets.IP_HOST }}
-  #       # DOMAIN_HOSTS: ${{ secrets.DOMAIN_HOSTS }}
-  #       POSTGRES_USER: django_user_1
-  #       POSTGRES_PASSWORD: django_password_1
-  #       POSTGRES_DB: db_1
+  #       POSTGRES_USER: django_user
+  #       POSTGRES_PASSWORD: django_password
+  #       POSTGRES_DB: db
   #       DB_HOST: 127.0.0.1
   #       DB_PORT: 5432
 

@@ -6,7 +6,7 @@
 Доменное имя: foodgramyami.sytes.net
 
 Админка:
-Логин: loginovskaya.yuliya.677@mail.ru
+Логин: li@mail.ru
 Пароль: 1
 ```
 
