@@ -3,7 +3,7 @@
 ### Данные для ревьюера
 
 ```
-Доменное имя: foodgramyami.sytes.net
+Доменное имя: [gram.sytes.net](https://gram.sytes.net)
 
 Админка:
 Логин: li@mail.ru
@@ -26,7 +26,7 @@
 ## Что cделано:
 
 - Настроен запуск проекта Foodgram в контейнерах и CI/CD с помощью GitHub Actions
-- Проект Foodgram доступен по доменному имени https://foodgramyami.sytes.net
+- Проект Foodgram доступен по доменному имени https://gram.sytes.net
 - Пуш в ветку master запускает тестирование и деплой Foodgram, а после успешного деплоя вам приходит сообщение в телеграм.
 
 ### Как запустить проект:
@@ -68,7 +68,6 @@ DB_HOST=db
 DB_PORT=5432
 SECRET_KEY=<50ти символьный ключ>
 DEBUG=False
-ALLOWED_HOSTS=<IP вашего сервера и домен сайта>
 ```
 
 Запустить docker-compose.production:
