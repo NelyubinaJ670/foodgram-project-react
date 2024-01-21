@@ -5,7 +5,7 @@ from users.models import User
 
 
 class RecipeFilter(filters.FilterSet):
-    """Фильтр выборки произведений по определенным полям."""
+    """Фильтрует выборку рецептов по полям."""
 
     author = filters.ModelMultipleChoiceFilter(
         field_name='author__id',

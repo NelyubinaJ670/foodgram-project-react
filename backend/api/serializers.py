@@ -1,6 +1,7 @@
 import base64
 
 from django.core.files.base import ContentFile
+from django.shortcuts import get_object_or_404
 
 from rest_framework.validators import UniqueTogetherValidator
 from rest_framework import serializers
@@ -64,6 +65,11 @@ class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ingredient
         fields = (
+            'id',
+            'name',
+            'measurement_unit'
+        )
+        read_only_fields = (
             'id',
             'name',
             'measurement_unit'
@@ -183,6 +189,35 @@ class RecipeSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 'Время готовки не может быть меньше минуты')
         return cooking_time
+
+    def validate(self, data):
+        ingredients = self.initial_data.get('ingredients')
+        if not ingredients:
+            raise serializers.ValidationError({
+                'ingredients': 'Нужен хоть один ингридиент для рецепта'})
+
+        tags = self.initial_data.get('tags')
+        if not tags:
+            raise serializers.ValidationError('Не указаны тэги')
+
+        if len(data['tags']) > len(set(data['tags'])):
+            raise serializers.ValidationError('Теги не могут повторяться!')
+
+        ingredient_list = []
+        for ingredient_item in ingredients:
+            ingredient = get_object_or_404(Ingredient,
+                                           id=ingredient_item['id'])
+            if ingredient in ingredient_list:
+                raise serializers.ValidationError('Ингридиенты должны '
+                                                  'быть уникальными')
+            ingredient_list.append(ingredient)
+            if int(ingredient_item['amount']) < 0:
+                raise serializers.ValidationError({
+                    'ingredients': ('Убедитесь, что значение количества '
+                                    'ингредиента больше 0')
+                })
+        data['ingredients'] = ingredients
+        return data
 
     def create_ingredients(self, ingredients, recipe):
         """ Метод создает рецепт с ингридиентами. """

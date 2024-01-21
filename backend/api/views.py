@@ -36,18 +36,20 @@ from api.serializers import (
 from users.models import User
 
 
-class TagViewSet(viewsets.ModelViewSet):
+class TagViewSet(viewsets.ReadOnlyModelViewSet):
     """ Вьюсет для модели Tag """
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     pagination_class = None
+    permission_classes = (OwnerOrReadOnly,)
 
 
-class IngredientViewSet(viewsets.ModelViewSet):
+class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     """ Вьюсет для модели Ingredient. """
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     pagination_class = None
+    permission_classes = (OwnerOrReadOnly,)
 
     def get_queryset(self):
         queryset = Ingredient.objects.all()
